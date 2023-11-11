@@ -11,7 +11,7 @@ import brandubh.util.Color;
 public class Celda {
     private Coordenada coordenada;
     private TipoCelda tipoCelda;
-    private Pieza pieza;
+    private Pieza pieza; //ji
 
     public Celda(Coordenada coordenada) {
         this.coordenada = coordenada;
