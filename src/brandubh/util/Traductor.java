@@ -1,9 +1,9 @@
 package brandubh.util;
 
 /**
-* @author David Santamaria Carrillo
-*/
-
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ */
 public class Traductor {
     private static final int TAMANO_TABLERO = 7;
 

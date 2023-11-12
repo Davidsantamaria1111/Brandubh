@@ -1,8 +1,9 @@
 package brandubh.util;
-
 /**
-* @author David Santamaria Carrillo
-*/
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ *  .
+ */
 
 public enum TipoCelda {
     TRONO,    // Tipo de celda correspondiente al trono

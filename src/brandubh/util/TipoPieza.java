@@ -1,30 +1,28 @@
 package brandubh.util;
-
 /**
-* @author David Santamaria Carrillo
-*/
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ *  Enumeración para representar colores.
+ */
 
 public enum TipoPieza {
-    DEFENSOR('D', Color.BLANCO),  // Pieza defensora de color blanco
-    ATACANTE('A', Color.NEGRO),   // Pieza atacante de color negro
-    REY('R', Color.BLANCO);       // Pieza rey de color blanco
-
-    private char caracter;
-    private Color color;
-
-    private TipoPieza(char caracter, Color color) {
-        this.caracter = caracter;
-        this.color = color;
-    }
-
-    public char getCaracter() {
-        return caracter;
-    }
-
-    public Color getColor() {
-        return color;
-    }
+	ATACANTE ('A', Color.NEGRO),
+	DEFENSOR ('D', Color.BLANCO),
+	REY ('R', Color.BLANCO);
+	
+	private char caracter;
+	private Color color;
+	
+	private TipoPieza(char letra, Color color) {
+		this.caracter = letra;
+		this.color = color;
+	}
+	
+	public char toChar() {
+		return caracter;
+	}
+	
+	public Color consultarColor() {
+		return color;
+	}
 }
-
-
-

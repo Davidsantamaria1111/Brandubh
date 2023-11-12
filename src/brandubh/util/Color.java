@@ -1,29 +1,26 @@
 package brandubh.util;
-
-
 /**
-*@author David Santamaria Carrillo
-*/
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ *  Enumeración para representar colores.
+ */
 
 public enum Color {
     BLANCO('B'),
     NEGRO('N');
 
-    private char codigo;
+    private char letra;
 
-    private Color(char codigo) {
-        this.codigo = codigo;
-    }
-
-    public char getCodigo() {
-        return codigo;
+    private Color(char letra) {
+        this.letra = letra;
     }
 
     public Color consultarContrario() {
-        if (this == BLANCO) {
-            return NEGRO;
-        } else {
-            return BLANCO;
-        }
+        return this.equals(BLANCO)? NEGRO: BLANCO;
+    }
+    
+    public char toChar() {
+        return letra;
     }
 }
+

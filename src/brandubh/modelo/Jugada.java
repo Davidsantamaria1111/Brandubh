@@ -1,52 +1,37 @@
 package brandubh.modelo;
 
-import brandubh.util.Coordenada;
+/**
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ */
 import brandubh.util.Sentido;
 
-/**
-* @author David Santamaria Carrillo
-*/
-
-
 public class Jugada {
-    private Coordenada origen;
-    private Coordenada destino;
 
-    public Jugada(Coordenada origen, Coordenada destino) {
+    private Celda origen;
+    private Celda destino;
+
+    public Jugada(Celda origen, Celda destino) {
         this.origen = origen;
         this.destino = destino;
     }
 
     public Sentido consultarSentido() {
-        int filaOrigen = origen.getFila();
-        int columnaOrigen = origen.getColumna();
-        int filaDestino = destino.getFila();
-        int columnaDestino = destino.getColumna();
+        int diffX = destino.getCoordenada().fila() - origen.getCoordenada().fila();
+        int diffY = destino.getCoordenada().columna() - origen.getCoordenada().columna();
 
-        int diferenciaFilas = filaDestino - filaOrigen;
-        int diferenciaColumnas = columnaDestino - columnaOrigen;
-
-        // Comprobamos si la jugada es en uno de los cuatro sentidos permitidos
-        if (diferenciaFilas == 0 && Math.abs(diferenciaColumnas) == 1) {
-            return diferenciaColumnas > 0 ? Sentido.HORIZONTAL_E : Sentido.HORIZONTAL_O;
-        } else if (diferenciaColumnas == 0 && Math.abs(diferenciaFilas) == 1) {
-            return diferenciaFilas > 0 ? Sentido.VERTICAL_S : Sentido.VERTICAL_N;
-        } else {
-            return null; // No es un movimiento en uno de los cuatro sentidos legales
+        if (diffX == 0 && diffY != 0) {
+            return (diffY > 0) ? Sentido.VERTICAL_S : Sentido.VERTICAL_N;
+        } else if (diffY == 0 && diffX != 0) {
+            return (diffX > 0) ? Sentido.HORIZONTAL_E : Sentido.HORIZONTAL_O;
         }
+
+        return null;
     }
 
     public boolean esMovimientoHorizontalOVertical() {
         Sentido sentido = consultarSentido();
-        return sentido == Sentido.HORIZONTAL_E || sentido == Sentido.HORIZONTAL_O ||
-               sentido == Sentido.VERTICAL_N || sentido == Sentido.VERTICAL_S;
-    }
-
-    public Coordenada getOrigen() {
-        return origen;
-    }
-
-    public Coordenada getDestino() {
-        return destino;
+        return sentido != null;
     }
 }
+

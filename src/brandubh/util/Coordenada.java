@@ -1,37 +1,22 @@
 package brandubh.util;
-
 /**
-* @author David Santamaria Carrillo
-*/
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ *  Coordenadas de una celda con su valor de fila y de columna.
+ */
 
-public class Coordenada {
-    private int fila;
-    private int columna;
-
-    public Coordenada(int fila, int columna) {
-        this.fila = fila;
-        this.columna = columna;
+public record Coordenada(int fila, int columna) { 
+	
+	public Coordenada clonar() {
+        return new Coordenada(this.fila, this.columna);
     }
-
-    public int getFila() {
-        return fila;
-    }
-
-    public int getColumna() {
-        return columna;
-    }
-
-    public void setFila(int fila) {
-        this.fila = fila;
-    }
-
-    public void setColumna(int columna) {
-        this.columna = columna;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + fila + ", " + columna + ")";
-    }
-
+	
+	public int getFila() {
+		return fila;
+	}
+	
+	public int getColumna() {
+		return columna;
+	}
 }
+
