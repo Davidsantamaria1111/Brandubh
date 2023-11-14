@@ -135,14 +135,49 @@ public class Tablero {
     }
 
 
+
     public Celda[] consultarCeldasContiguasEnVertical(Coordenada coordenada) {
-        // Implementar la obtención de celdas contiguas en vertical a la coordenada dada
-        return null; // Reemplazar con la implementación real
+        List<Celda> celdasContiguasVertical = new ArrayList<>();
+
+        int fila = coordenada.getFila();
+        int columna = coordenada.getColumna();
+
+        // Definir los límites de búsqueda para las celdas contiguas en vertical
+        int filaInicio = Math.max(0, fila - 1);
+        int filaFin = Math.min(filas - 1, fila + 1);
+        int columnaInicio = columna;
+        int columnaFin = columna;
+
+        // Recorrer las celdas en el rango vertical especificado y agregar las celdas contiguas
+        for (int i = filaInicio; i <= filaFin; i++) {
+            celdasContiguasVertical.add(celdas[i][columna].clonar()); // Agregar un clon en profundidad de la celda
+        }
+
+        return celdasContiguasVertical.toArray(new Celda[0]);
     }
 
+
     public int consultarNumeroPiezas(TipoPieza tipoPieza) {
-        // Implementar la consulta del número de piezas en el tablero del tipo indicado
-        return 0; // Reemplazar con la implementación real
+        int contador = 0;
+
+        for (int fila = 0; fila < filas; fila++) {
+            for (int columna = 0; columna < columnas; columna++) {
+                Celda celdaActual = celdas[fila][columna];
+                Pieza piezaActual = celdaActual.obtenerPieza();
+                
+                if (piezaActual != null && piezaActual.consultarTipo() == tipoPieza) {
+                    contador++;
+                }
+            }
+        }
+
+        return contador;
     }
+
+
+
+
+
+
 }
 
