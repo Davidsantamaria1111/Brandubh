@@ -1,5 +1,7 @@
 package brandubh.modelo;
 
+import java.util.List;
+import java.util.ArrayList;
 import brandubh.util.Coordenada;
 import brandubh.util.TipoPieza;
 
