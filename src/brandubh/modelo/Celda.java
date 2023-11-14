@@ -95,4 +95,9 @@ public class Celda {
     public String toString() {
         return "Celda{" + "coordenada=" + coordenada + ", tipoCelda=" + tipoCelda + ", pieza=" + pieza + '}';
     }
+
+	public Pieza obtenerPieza() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

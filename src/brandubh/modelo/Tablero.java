@@ -113,6 +113,7 @@ public class Tablero {
 
         return celdasContiguas.toArray(new Celda[0]);
         }
+		return null;
     }
 
 
@@ -167,7 +168,7 @@ public class Tablero {
                 Celda celdaActual = celdas[fila][columna];
                 Pieza piezaActual = celdaActual.obtenerPieza();
                 
-                if (piezaActual != null && piezaActual.consultarTipo() == tipoPieza) {
+                if (piezaActual != null && piezaActual.consultarTipoPieza() == tipoPieza) {
                     contador++;
                 }
             }
