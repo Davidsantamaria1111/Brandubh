@@ -10,18 +10,18 @@ import brandubh.util.TipoPieza;
 */
 
 public class Tablero {
-    private Celda[][] celdas; // Array de celdas de dos dimensiones
-    private int filas;
-    private int columnas;
+    private static final int FILAS = 7;
+    private static final int COLUMNAS = 7;
+    private Celda[][] celdas;
 
-    public Tablero(int filas, int columnas) {
-        this.filas = filas;
-        this.columnas = columnas;
-        celdas = new Celda[filas][columnas];
+    public Tablero() {
+        celdas = new Celda[FILAS][COLUMNAS];
+        inicializarTablero();
+    }
 
-        for (int fila = 0; fila < filas; fila++) {
-            for (int columna = 0; columna < columnas; columna++) {
-                // Crea una celda vacía con sus coordenadas correspondientes
+    private void inicializarTablero() {
+        for (int fila = 0; fila < FILAS; fila++) {
+            for (int columna = 0; columna < COLUMNAS; columna++) {
                 Coordenada coordenada = new Coordenada(fila, columna);
                 celdas[fila][columna] = new Celda(coordenada);
             }
@@ -176,11 +176,6 @@ public class Tablero {
 
         return contador;
     }
-
-
-
-
-
 
 }
 
