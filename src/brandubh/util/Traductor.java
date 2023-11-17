@@ -20,7 +20,8 @@ public class Traductor {
             return null;
         }
         
-        int filaNumerica = fila - '1';
+        
+        int filaNumerica = '0' + TAMANO_TABLERO - fila;
         int columnaNumerica = columna - 'a';
         
         return new Coordenada(filaNumerica, columnaNumerica);
@@ -32,11 +33,13 @@ public class Traductor {
             return null;
         }
         
-        char fila = (char) ('1' + coordenada.getFila());
+       
+        char fila = (char) ('0' + TAMANO_TABLERO - coordenada.getFila());
         char columna = (char) ('a' + coordenada.getColumna());
         
         return Character.toString(columna) + Character.toString(fila);
     }
+
 
     public static boolean esTextoCorrectoParaCoordenada(String texto) {
         if (texto == null || texto.length() != 2) {
@@ -46,6 +49,7 @@ public class Traductor {
         char columna = texto.charAt(0);
         char fila = texto.charAt(1);
         
+
         return (columna >= 'a' && columna < 'a' + TAMANO_TABLERO) &&
                (fila >= '1' && fila <= '0' + TAMANO_TABLERO);
     }
