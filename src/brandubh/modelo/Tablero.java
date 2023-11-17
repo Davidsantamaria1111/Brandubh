@@ -1,174 +1,159 @@
 package brandubh.modelo;
 
-import java.util.List;
-import java.util.ArrayList;
-import brandubh.util.Coordenada;
-import brandubh.util.TipoPieza;
 
 /**
-*@author David Santamaria Carrillo
-*/
+ *  Autor: Pablo Citores y David Santamaría
+ *  Grupo 103
+ */
+
+import brandubh.util.Coordenada;
+import brandubh.util.TipoPieza;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tablero {
-    private static final int FILAS = 7;
+	private static final int FILAS = 7;
     private static final int COLUMNAS = 7;
+
     private Celda[][] celdas;
 
+    // Constructor
     public Tablero() {
         celdas = new Celda[FILAS][COLUMNAS];
         inicializarTablero();
     }
 
+    // Inicializar el tablero con celdas vacías
     private void inicializarTablero() {
-        for (int fila = 0; fila < FILAS; fila++) {
-            for (int columna = 0; columna < COLUMNAS; columna++) {
-                Coordenada coordenada = new Coordenada(fila, columna);
-                celdas[fila][columna] = new Celda(coordenada);
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                celdas[i][j] = new Celda(new Coordenada(i, j));
             }
         }
     }
 
     public String aTexto() {
-        StringBuilder textoTablero = new StringBuilder();
-
-        for (int fila = 0; fila < filas; fila++) {
-            for (int columna = 0; columna < columnas; columna++) {
-                Celda celdaActual = celdas[fila][columna];
-                if (!celdaActual.estaVacia()) {
-                    // Si la celda no está vacía, se asume que tiene una pieza
-                    // Aquí se puede agregar la lógica para representar cada tipo de pieza con un carácter
-                    textoTablero.append("[X]"); // Reemplazar por la representación de la pieza
-                } else {
-                    textoTablero.append("[ ]"); // Si la celda está vacía
-                }
+        StringBuilder resultado = new StringBuilder();
+        for (int i = FILAS - 1; i >= 0; i--) {
+            resultado.append(i + 1).append(" ");
+            for (int j = 0; j < COLUMNAS; j++) {
+                resultado.append(celdas[i][j].toString()).append(" ");
             }
-            textoTablero.append("\n"); // Nueva línea para la siguiente fila del tablero
+            resultado.append("\n");
         }
-
-        return textoTablero.toString();
+        resultado.append("  a b c d e f g");
+        return resultado.toString();
     }
 
     public Tablero clonar() {
-        Tablero tableroClon = new Tablero(filas, columnas);
-        
-        for (int fila = 0; fila < filas; fila++) {
-            for (int columna = 0; columna < columnas; columna++) {
-                tableroClon.celdas[fila][columna] = celdas[fila][columna].clonar();
+        Tablero tableroClonado = new Tablero();
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                tableroClonado.celdas[i][j] = this.celdas[i][j].clonar();
             }
         }
-        
-        return tableroClon;
+        return tableroClonado;
     }
 
-    public void colocar(Coordenada coordenada, Pieza pieza) {
-        if (coordenada != null && coordenada.getFila() >= 0 && coordenada.getFila() < filas
-                && coordenada.getColumna() >= 0 && coordenada.getColumna() < columnas
-                && pieza != null) {
+    public void colocar(Pieza pieza, Coordenada coordenada) {
+        if (coordenadaEnTablero(coordenada) && pieza != null) {
             celdas[coordenada.getFila()][coordenada.getColumna()].colocar(pieza);
         }
     }
 
     public Celda consultarCelda(Coordenada coordenada) {
-        if (coordenada != null && coordenada.getFila() >= 0 && coordenada.getFila() < filas
-                && coordenada.getColumna() >= 0 && coordenada.getColumna() < columnas) {
+        if (coordenadaEnTablero(coordenada)) {
             return celdas[coordenada.getFila()][coordenada.getColumna()].clonar();
         }
         return null;
     }
 
     public Celda[] consultarCeldas() {
-        Celda[] celdasClonadas = new Celda[filas * columnas];
+        Celda[] celdasClonadas = new Celda[FILAS * COLUMNAS];
         int index = 0;
 
-        for (int fila = 0; fila < filas; fila++) {
-            for (int columna = 0; columna < columnas; columna++) {
-                celdasClonadas[index] = celdas[fila][columna].clonar();
-                index++;
+        for (int fila = 0; fila < FILAS; fila++) {
+            for (int columna = 0; columna < COLUMNAS; columna++) {
+                celdasClonadas[index++] = celdas[fila][columna].clonar();
             }
         }
 
         return celdasClonadas;
     }
 
-
     public Celda[] consultarCeldasContiguas(Coordenada coordenada) {
-        List<Celda> celdasContiguas = new ArrayList<>();
+        if (coordenadaEnTablero(coordenada)) {
+            List<Celda> celdasContiguas = new ArrayList<>();
 
-        int fila = coordenada.getFila();
-        int columna = coordenada.getColumna();
+            // Coordenadas de las celdas contiguas
+            Coordenada[] coordenadasContiguas = {
+                    new Coordenada(coordenada.getFila() - 1, coordenada.getColumna()), // Arriba
+                    new Coordenada(coordenada.getFila() + 1, coordenada.getColumna()), // Abajo
+                    new Coordenada(coordenada.getFila(), coordenada.getColumna() - 1), // Izquierda
+                    new Coordenada(coordenada.getFila(), coordenada.getColumna() + 1)  // Derecha
+            };
 
-        // Definir los límites de búsqueda para las celdas contiguas
-        int filaInicio = Math.max(0, fila - 1);
-        int filaFin = Math.min(filas - 1, fila + 1);
-        int columnaInicio = Math.max(0, columna - 1);
-        int columnaFin = Math.min(columnas - 1, columna + 1);
+            for (Coordenada contigua : coordenadasContiguas) {
+                if (coordenadaEnTablero(contigua)) {
+                    celdasContiguas.add(celdas[contigua.getFila()][contigua.getColumna()].clonar());
+                }
+            }
 
-        // Recorrer las celdas en el rango especificado y agregar las celdas contiguas
-        for (int i = filaInicio; i <= filaFin; i++) {
-            for (int j = columnaInicio; j <= columnaFin; j++) {
-                if (i != fila || j != columna) {
-                    celdasContiguas.add(celdas[i][j].clonar()); // Agregar un clon en profundidad de la celda
+            return celdasContiguas.toArray(new Celda[0]);
         }
-    }
 
-        return celdasContiguas.toArray(new Celda[0]);
-        }
-		return null;
+        return null;
     }
 
 
     public Celda[] consultarCeldasContiguasEnHorizontal(Coordenada coordenada) {
-        List<Celda> celdasContiguasHorizontal = new ArrayList<>();
+        if (!coordenadaEnTablero(coordenada)) {
+            return new Celda[0];
+        }
 
         int fila = coordenada.getFila();
         int columna = coordenada.getColumna();
 
-        // Definir los límites de búsqueda para las celdas contiguas en horizontal
-        int columnaInicio = Math.max(0, columna - 1);
-        int columnaFin = Math.min(columnas - 1, columna + 1);
+        // Coordenadas de las celdas contiguas en horizontal
+        Coordenada[] contiguasCoordenadas = {
+                new Coordenada(fila, columna - 1),
+                new Coordenada(fila, columna + 1)
+        };
 
-        // Recorrer las celdas en el rango horizontal especificado y agregar las celdas contiguas
-        for (int j = columnaInicio; j <= columnaFin; j++) {
-            if (j != columna) {
-                celdasContiguasHorizontal.add(celdas[fila][j].clonar()); // Agregar un clon en profundidad de la celda
-            }
-        }
-
-        return celdasContiguasHorizontal.toArray(new Celda[0]);
+        return Arrays.stream(contiguasCoordenadas)
+                .filter(this::coordenadaEnTablero)
+                .map(this::consultarCelda)
+                .toArray(Celda[]::new);
     }
-
-
 
     public Celda[] consultarCeldasContiguasEnVertical(Coordenada coordenada) {
-        List<Celda> celdasContiguasVertical = new ArrayList<>();
+        if (!coordenadaEnTablero(coordenada)) {
+            return new Celda[0];
+        }
 
         int fila = coordenada.getFila();
         int columna = coordenada.getColumna();
 
-        // Definir los límites de búsqueda para las celdas contiguas en vertical
-        int filaInicio = Math.max(0, fila - 1);
-        int filaFin = Math.min(filas - 1, fila + 1);
-        int columnaInicio = columna;
-        int columnaFin = columna;
+        // Coordenadas de las celdas contiguas en vertical
+        Coordenada[] contiguasCoordenadas = {
+                new Coordenada(fila - 1, columna),
+                new Coordenada(fila + 1, columna)
+        };
 
-        // Recorrer las celdas en el rango vertical especificado y agregar las celdas contiguas
-        for (int i = filaInicio; i <= filaFin; i++) {
-            celdasContiguasVertical.add(celdas[i][columna].clonar()); // Agregar un clon en profundidad de la celda
-        }
-
-        return celdasContiguasVertical.toArray(new Celda[0]);
+        return Arrays.stream(contiguasCoordenadas)
+                .filter(this::coordenadaEnTablero)
+                .map(this::consultarCelda)
+                .toArray(Celda[]::new);
     }
-
 
     public int consultarNumeroPiezas(TipoPieza tipoPieza) {
         int contador = 0;
 
-        for (int fila = 0; fila < filas; fila++) {
-            for (int columna = 0; columna < columnas; columna++) {
-                Celda celdaActual = celdas[fila][columna];
-                Pieza piezaActual = celdaActual.obtenerPieza();
-                
-                if (piezaActual != null && piezaActual.consultarTipoPieza() == tipoPieza) {
+        for (int fila = 0; fila < FILAS; fila++) {
+            for (int columna = 0; columna < COLUMNAS; columna++) {
+                Celda celda = celdas[fila][columna];
+                if (celda.consultarPieza() != null && celda.consultarPieza().consultarTipoPieza() == tipoPieza) {
                     contador++;
                 }
             }
@@ -177,5 +162,24 @@ public class Tablero {
         return contador;
     }
 
+    public void eliminarPieza(Coordenada coordenada) {
+        if (coordenadaEnTablero(coordenada)) {
+            celdas[coordenada.getFila()][coordenada.getColumna()].eliminarPieza();
+        }
+    }
+
+    public Celda obtenerCelda(Coordenada coordenada) {
+        if (coordenadaEnTablero(coordenada)) {
+            return celdas[coordenada.getFila()][coordenada.getColumna()];
+        }
+        return null;
+    }
+
+    private boolean coordenadaEnTablero(Coordenada coordenada) {
+        return coordenada != null && coordenada.getFila() >= 0 && coordenada.getFila() < FILAS
+                && coordenada.getColumna() >= 0 && coordenada.getColumna() < COLUMNAS;
+    }
 }
+
+
 
