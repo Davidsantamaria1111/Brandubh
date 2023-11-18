@@ -83,28 +83,29 @@ public class Tablero {
     }
 
     public Celda[] consultarCeldasContiguas(Coordenada coordenada) {
-        if (coordenadaEnTablero(coordenada)) {
-            List<Celda> celdasContiguas = new ArrayList<>();
-
-            // Coordenadas de las celdas contiguas
-            Coordenada[] coordenadasContiguas = {
-                    new Coordenada(coordenada.getFila() - 1, coordenada.getColumna()), // Arriba
-                    new Coordenada(coordenada.getFila() + 1, coordenada.getColumna()), // Abajo
-                    new Coordenada(coordenada.getFila(), coordenada.getColumna() - 1), // Izquierda
-                    new Coordenada(coordenada.getFila(), coordenada.getColumna() + 1)  // Derecha
-            };
-
-            for (Coordenada contigua : coordenadasContiguas) {
-                if (coordenadaEnTablero(contigua)) {
-                    celdasContiguas.add(celdas[contigua.getFila()][contigua.getColumna()].clonar());
-                }
-            }
-
-            return celdasContiguas.toArray(new Celda[0]);
+        if (!coordenadaEnTablero(coordenada)) {
+            return new Celda[0]; // Devuelve un array vacío si las coordenadas no están en el tablero
         }
 
-        return null;
+        List<Celda> celdasContiguas = new ArrayList<>();
+
+        // Coordenadas de las celdas contiguas
+        Coordenada[] coordenadasContiguas = {
+                new Coordenada(coordenada.getFila() - 1, coordenada.getColumna()), // Arriba
+                new Coordenada(coordenada.getFila() + 1, coordenada.getColumna()), // Abajo
+                new Coordenada(coordenada.getFila(), coordenada.getColumna() - 1), // Izquierda
+                new Coordenada(coordenada.getFila(), coordenada.getColumna() + 1)  // Derecha
+        };
+
+        for (Coordenada contigua : coordenadasContiguas) {
+            if (coordenadaEnTablero(contigua)) {
+                celdasContiguas.add(celdas[contigua.getFila()][contigua.getColumna()].clonar());
+            }
+        }
+
+        return celdasContiguas.toArray(new Celda[0]);
     }
+
 
 
     public Celda[] consultarCeldasContiguasEnHorizontal(Coordenada coordenada) {
@@ -146,6 +147,20 @@ public class Tablero {
                 .map(this::consultarCelda)
                 .toArray(Celda[]::new);
     }
+    
+    public int consultarNumeroFilas() {
+        return celdas.length; // Devuelve el número de filas del tablero
+    }
+
+    
+    public int consultarNumeroColumnas() {
+        if (celdas.length == 0 || celdas[0] == null) {
+            return 0; // No hay columnas si no hay filas o si la primera fila es nula
+        } else {
+            return celdas[0].length; // Devuelve el número de columnas (longitud de la primera fila)
+        }
+    }
+
 
     public int consultarNumeroPiezas(TipoPieza tipoPieza) {
         int contador = 0;
